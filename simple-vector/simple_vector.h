@@ -12,7 +12,7 @@
 class ReserveProxyObj {
 public:
     explicit ReserveProxyObj(size_t capacity)
-    :  capacity_(capacity){}
+        :  capacity_(capacity){}
 
     size_t GetCapacity() const noexcept {
         return capacity_;
@@ -26,7 +26,7 @@ private:
 ReserveProxyObj Reserve(size_t capacity_to_reserve) {
     return ReserveProxyObj(capacity_to_reserve);
 }
- 
+
 
 template <typename Type>
 class SimpleVector {
@@ -34,9 +34,9 @@ class SimpleVector {
 public:
     using Iterator = Type*;
     using ConstIterator = const Type*;
-    
+
     SimpleVector() noexcept = default;
-    
+
     explicit SimpleVector(size_t size)
         : items_(size)
         , size_(size)
@@ -50,21 +50,21 @@ public:
         , capacity_(reserved.GetCapacity()){
     }
 
-    
+
     SimpleVector(size_t size, const Type& value)
         : items_(size)
         , size_(size)
         , capacity_(size){
         std::fill(begin(), end(), value);
     }
-    
+
     SimpleVector(std::initializer_list<Type> init)
         : items_(init.size())
         , size_(init.size())
         , capacity_(init.size()){
         std::copy(init.begin(), init.end(), begin());
     }
-    
+
 
     SimpleVector(const SimpleVector& other)
         : items_(other.capacity_)
@@ -95,7 +95,7 @@ public:
             if(other.IsEmpty()){
                 Clear();
             } else{
-                SimpleVector temp(other); 
+                SimpleVector temp(other);
                 swap(temp);
             }
         }
@@ -127,15 +127,16 @@ public:
 
 
     Iterator Insert(ConstIterator pos, const Type& value) {
+        assert(pos >= begin() && pos <= end());
         size_t index = pos - begin();
-        
+
         if (size_ == capacity_) {
             Reserve(capacity_ == 0 ? 1 : capacity_ * 2);
         }
-        
+
         // Сдвигаем элементы вправо
         std::copy_backward(begin() + index, end(), end() + 1);
-        
+
         items_.GetItems()[index] = value;
         ++size_;
         return begin() + index;
@@ -143,15 +144,16 @@ public:
 
 
     Iterator Insert(ConstIterator pos, Type&& value) {
+        assert(pos >= begin() && pos <= end());
         size_t index = pos - begin();
-        
+
         if (size_ == capacity_) {
             Reserve(capacity_ == 0 ? 1 : capacity_ * 2);
         }
-        
+
         // Сдвигаем элементы вправо
         std::move_backward(begin() + index, end(), end() + 1);
-        
+
         items_.GetItems()[index] = std::move(value);
         ++size_;
         return begin() + index;
@@ -210,7 +212,7 @@ public:
 
         if (new_size > size_) {
             for (size_t i = size_; i < new_size; ++i) {
-                items_.GetItems()[i] = Type(); 
+                items_.GetItems()[i] = Type();
             }
         }
 
@@ -219,7 +221,7 @@ public:
 
     void Reserve(size_t new_capacity){
         if (new_capacity <= capacity_) {
-            return; 
+            return;
         }
 
         ArrayPtr<Type> new_items(new Type[new_capacity]);

@@ -38,28 +38,28 @@ public:
     SimpleVector() noexcept = default;
     
     explicit SimpleVector(size_t size)
-        : items_(size ? new Type[size] : nullptr)
+        : items_(size)
         , size_(size)
         , capacity_(size){
         std::fill(begin(), end(), Type());
     }
 
     SimpleVector(ReserveProxyObj reserved)
-        : items_(reserved.GetCapacity() ? new Type[reserved.GetCapacity()] : nullptr)
+        : items_(reserved.GetCapacity())
         , size_(0)
         , capacity_(reserved.GetCapacity()){
     }
 
     
     SimpleVector(size_t size, const Type& value)
-        : items_(size ? new Type[size] : nullptr)
+        : items_(size)
         , size_(size)
         , capacity_(size){
         std::fill(begin(), end(), value);
     }
     
     SimpleVector(std::initializer_list<Type> init)
-        : items_(init.size() ? new Type[init.size()] : nullptr)
+        : items_(init.size())
         , size_(init.size())
         , capacity_(init.size()){
         std::copy(init.begin(), init.end(), begin());
@@ -67,7 +67,7 @@ public:
     
 
     SimpleVector(const SimpleVector& other)
-        : items_(other.capacity_ ? new Type[other.capacity_] : nullptr)
+        : items_(other.capacity_)
         , size_(other.size_)
         , capacity_(other.capacity_){
         std::copy(other.begin(), other.end(), begin());

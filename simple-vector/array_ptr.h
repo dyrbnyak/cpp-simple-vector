@@ -6,7 +6,11 @@ class ArrayPtr {
 public:
     ArrayPtr() = default;
 
-    ArrayPtr(Type* p) : raw_ptr_(p) {}
+    ArrayPtr(Type* p)
+        : raw_ptr_(p) {}
+    
+    ArrayPtr(const size_t& size)
+        : raw_ptr_(size ? new Type[size] : nullptr) {}
 
     ~ArrayPtr() {
         delete[] raw_ptr_;

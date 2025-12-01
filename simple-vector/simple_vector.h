@@ -92,8 +92,12 @@ public:
 
     SimpleVector& operator=(const SimpleVector& other) {
         if (this != &other) {
-            SimpleVector temp(other); 
-            swap(temp);
+            if(other.IsEmpty()){
+                Clear();
+            } else{
+                SimpleVector temp(other); 
+                swap(temp);
+            }
         }
         return *this;
     }
